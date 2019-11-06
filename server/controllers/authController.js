@@ -3,23 +3,19 @@ const bcrypt = require('bcryptjs')
 module.exports = {
     login: async (req, res) => {
         const {username, password} = req.body;
-        console.log(username, password)
         const db = req.app.get('db');
         let foundUser = await db.check_username(username)
         foundUser=foundUser[0]
         if(!foundUser){
-            console.log('no user of such a name')
             res.status(401).send('user does not exist')
         }
         const authenticated = bcrypt.compareSync(password, foundUser.password)
-        console.log(authenticated)
         if(authenticated){
             delete foundUser.password;
             req.session.user = foundUser;
-            console.log(req.session)
+            
             res.status(202).send(req.session.user)
         } else {
-            console.log('password is incorrect')
             res.status(401).send('Password is incorrect')
         }
     },
@@ -43,7 +39,8 @@ module.exports = {
             newUser = newUser[0];
             delete newUser.password;
             req.session.user = {...newUser};
-            res.status(200).send(req.session.user.username);
+            console.log(req.session.user)
+            res.status(200).send(req.session.user);
         }
     },
 

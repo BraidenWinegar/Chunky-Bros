@@ -1,4 +1,4 @@
-Insert Into item_list (
+Insert Into item_lists (
     order_id,
     item_id,
     quantity
@@ -8,4 +8,5 @@ Insert Into item_list (
     1
 );
 
-select * from item_list;
+select * from item_lists
+where order_id=$1 and item_id=$2;

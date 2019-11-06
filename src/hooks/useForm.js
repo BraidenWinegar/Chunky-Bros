@@ -19,7 +19,6 @@ export const useForm = callback => {
     }
 
     function validate (values) {
-        console.log('validate')
         const errors = {};
 
         if (!values.username){
@@ -59,7 +58,6 @@ export const useForm = callback => {
 
     useEffect(() => {
         if (Object.keys(errors).length === 0 && isSubmitting){
-            console.log('hit if in useEffect')
             callback()
         }
     }, [errors, callback, isSubmitting])

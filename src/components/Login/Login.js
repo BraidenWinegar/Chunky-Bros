@@ -7,18 +7,14 @@ import {updateUser} from '../../Reducer/reducer'
 
 function Login(props) {
     const login = () => {
-        console.log('hit handle login', state)
 
         axios.post('/auth/login', 
         {username: state.username, password: state.password})
         .then(res => {
-            console.log('res', res.data.username)
-
-            props.updateUser(res.data.username)
-            props.history.push('/')
+            props.updateUser(res.data)
+            props.history.go(-1)
         })
         .catch(err => console.log(err))
-        console.log('slap handle login')
     }
     
     const {state, handleChange, handleSubmit, errors} = useForm(login)

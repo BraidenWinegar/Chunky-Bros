@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import {connect} from 'react-redux'
+import {updateOrderId } from '../../Reducer/reducer'
 
 import Items from './Items'
 
@@ -9,22 +11,35 @@ import Items from './Items'
 
 function Menu (props) {
     const [menu, setMenu ]= useState([]);
+    const [hasOrder, setHasOrder] = useState(false)
+    
     useEffect(()=> {
         axios.get('/api/menu')
         .then(res => {
-            console.log("res.data", res.data)
             setMenu(res.data)
-     })
+        })
         .catch(err => console.log(err))
-
-        console.log('menu', menu)
-
     }, [])
+    
+
+    useEffect(()=> {
+        console.log(props.orderId)
+        if( props.orderId ) {
+            setHasOrder(true)
+        } else {
+            
+        }
+    },[])
+
+    
+
+
     
     const itemList = menu.map(e => {
         return (
             <Items 
-            key={e.item_id} 
+            key={`item ${e.item_id}`}
+            item_id={e.item_id} 
             item_name={e.item_name}r
             price={e.price}
             picture_url={e.picture_url}
@@ -32,7 +47,6 @@ function Menu (props) {
             )
     })
     
-    console.log('items', menu)
         
     return (
     <div>
@@ -43,4 +57,13 @@ function Menu (props) {
     </div>)
 }
 
-export default Menu;
+function mapStateToProps(reactState) {
+    const {  orderId } = reactState
+    return { orderId }
+}
+
+const mapDispatchToProps = {
+    updateOrderId
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)

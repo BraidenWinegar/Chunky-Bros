@@ -1,7 +1,5 @@
 insert into orders (
     user_id
 ) values (
-    $1
+    0
 ) returning order_id;
-
-
