@@ -2,7 +2,7 @@ import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 import Landing from './components/Landing'
 import Menu from './components/Menu/Menu'
-import Order from './components/Order'
+import Order from './components/Order/Order'
 import Checkout from './components/Checkout'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'

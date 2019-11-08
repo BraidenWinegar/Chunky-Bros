@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"
 import {connect} from 'react-redux'
 import axios from 'axios'
-import clearUser from '../Reducer/reducer'
+import {clearUser} from '../Reducer/reducer'
 
 function Account(props) {
    
@@ -20,6 +20,7 @@ function Account(props) {
     function handleLogout (){
         axios.post('/auth/logout')
         .then( () => {
+            props.clearUser()
             props.history.push('/')
         })
     }
@@ -47,4 +48,4 @@ function mapStateToProps(reactState) {
     return { location, userName }
 }
 
-export default connect(mapStateToProps, null)(Account) 
+export default connect(mapStateToProps, mapDispatchToProps)(Account) 

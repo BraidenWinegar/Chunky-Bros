@@ -5,8 +5,7 @@ const initialState = {
     location: '',
     userName: '',
     oderId: 0,
-    user: {},
-    hasOrder: false
+    user: {}
 }
 
 const UPDATE_USER = 'UPDATE_USER';
@@ -21,21 +20,12 @@ export function updateUser(userObj) {
 }
 
 export function clearUser() {
-    return {
+    const action = {
         type: CLEAR_USER,
         payload: ''
     }
-}
-
-
-export const addOrder = (user) =>   ////currently not using
-{
-    const order = axios.post(`/api/order/${user && user.user_id}`)
-            .then(res => res.data)
-            .catch(err => console.log(err))
-    console.log('order in reducer', order)
-    updateOrderId(1)
-    return (order)
+    console.log (action)
+    return action
 }
 
 export function updateOrderId(orderId) {
@@ -45,19 +35,15 @@ export function updateOrderId(orderId) {
     }
 }
 
-
-
 export default function reducer (state = initialState, action) {
     const {type, payload} = action
-    // console.log('reducer', state, action)
     switch(type){
         case UPDATE_USER:
-            console.log(state)
             return { ...state, userName:payload.username, user:payload }
         case CLEAR_USER:
             return { ...state, userName:payload, user:payload }
         case UPDATE_ORDER:
-            return { ...state, oderId:payload } 
+            return { ...state, orderId: payload } 
         default: 
             return state
     }

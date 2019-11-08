@@ -11,28 +11,24 @@ import Items from './Items'
 
 function Menu (props) {
     const [menu, setMenu ]= useState([]);
-    const [hasOrder, setHasOrder] = useState(false)
+    const [hasOrder, setHasOrder]= useState(false)
     
     useEffect(()=> {
-        axios.get('/api/menu')
-        .then(res => {
-            setMenu(res.data)
-        })
+        let user_id = 0;
+        axios.get('/api/menu') ///get menu for items
+        .then(res => { setMenu(res.data) })
         .catch(err => console.log(err))
-    }, [])
-    
-
-    useEffect(()=> {
-        console.log(props.orderId)
-        if( props.orderId ) {
+        if(props.orderId) {    //check if order has been made makes a new order if false
             setHasOrder(true)
         } else {
-            
+            if(props.userName)
+                user_id = props.user.user_id
+            axios.post(`/api/order/${user_id}`)
+            .then(res => {
+                props.updateOrderId( res.data.order_id[0].order_id )
+            }).catch(err => console.log(err))
         }
-    },[])
-
-    
-
+    }, [])
 
     
     const itemList = menu.map(e => {
@@ -43,11 +39,11 @@ function Menu (props) {
             item_name={e.item_name}r
             price={e.price}
             picture_url={e.picture_url}
+            userName={props.userName}
+            hasOrder={hasOrder}
             />
             )
     })
-    
-        
     return (
     <div>
         Look at our good food!
@@ -58,8 +54,8 @@ function Menu (props) {
 }
 
 function mapStateToProps(reactState) {
-    const {  orderId } = reactState
-    return { orderId }
+    const {  userName, orderId, user } = reactState
+    return { userName, orderId, user }
 }
 
 const mapDispatchToProps = {
