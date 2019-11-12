@@ -1,30 +1,30 @@
 import React from 'react'
 
-function LocationSelector(Props) {
+function LocationSelector(props) {
     const [expanded, setExpanded] = React.useState(false)
-    const [selected, setSelected] = React.useState({  ///possible change to props.selected
-        locationId: null,
-        name: "Please select location"
-    })
+    const [selected, setSelected] = React.useState(props.selected)
 
-    const expandedButtons = Props.locations.map((e, i) => {
-        return(
-            <div    className='selector-button' 
-                    key={`selector ${i}`} 
-                    onClick={handleSelection} > 
-                {e.name}
-            </div>
-        )        
-    })
-
+    
     function handleSelection (e) {
-        setSelected({name: e.name, locationId: e.locationId})
-        Props.handleSelection()
+        setSelected({name: e.name})
+        props.handleSelection(e)
+        setExpanded(false)
     }
-
+    
     function handleExpand () {
         setExpanded(true)
     }
+    
+    const expandedButtons = props.locations.map((e, i) => {
+        console.log('e',e)
+        return(
+            <button className='selector-button' key={`selector ${i}`} onClick={()=>handleSelection(e)} > 
+                {e.name}
+            </button>
+        )        
+    })
+    
+    console.log("locations", props.locations)
 
     if(expanded){
         return (
@@ -32,7 +32,6 @@ function LocationSelector(Props) {
                 {expandedButtons}
             </div>
         )
-
     } else {
         return (
         <div className='Selector'>

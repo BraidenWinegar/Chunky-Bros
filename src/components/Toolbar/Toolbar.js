@@ -1,22 +1,23 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import './Toolbar.css'
+import logo from '../../img/mustache-logo.png'
 
 function Toolbar(props) {
     /// Component that makes a nav bar on top of paige
     /// will have links to several pages [landing, menu, maps]
     /// and the last link will change based on username in redux
     /// the last 2 links will have different titles below the links change based on values in redux
-
     
-    const mapTitle = (props.location) ? props.location : 'Choose Location'
+    
+    const mapTitle = (props.location) ? props.location.name : 'Choose Location'
     const userName = (props.userName) ? props.userName : 'Login'
 
     return(
         <header>
-            <Link id='logo' to='/'>
-                <div >Logo</div>
+            <Link  to='/'>
+                <img id='logo' src={logo}/>
             </Link>
             
             <nav>

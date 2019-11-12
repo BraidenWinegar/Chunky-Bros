@@ -11,16 +11,13 @@ import Items from './Items'
 
 function Menu (props) {
     const [menu, setMenu ]= useState([]);
-    const [hasOrder, setHasOrder]= useState(false)
     
     useEffect(()=> {
         let user_id = 0;
         axios.get('/api/menu') ///get menu for items
         .then(res => { setMenu(res.data) })
         .catch(err => console.log(err))
-        if(props.orderId) {    //check if order has been made makes a new order if false
-            setHasOrder(true)
-        } else {
+        if(!props.orderId)  {
             if(props.userName)
                 user_id = props.user.user_id
             axios.post(`/api/order/${user_id}`)
@@ -40,13 +37,14 @@ function Menu (props) {
             price={e.price}
             picture_url={e.picture_url}
             userName={props.userName}
-            hasOrder={hasOrder}
             />
             )
     })
     return (
     <div>
-        Look at our good food!
+        <p className='directing-words'>Click On Item you want!</p>
+        <p className='directing-words'>or Going to</p>
+
         <Link to='/Order'><button>Your Order</button></Link>
         <br/>
         {itemList}

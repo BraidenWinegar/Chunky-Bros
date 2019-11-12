@@ -1,50 +1,76 @@
-import React, {useState} from 'react'
-import {GoogleMap, withScriptjs, withGoogleMap, Marker} from "react-google-maps"
+import React, {useState, useEffect} from 'react'
+import {connect} from 'react-redux'
+import {updateLocation} from '../../Reducer/reducer'
+import {GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow} from "react-google-maps"
 import Selector from './Selector'
+import mapStyles from './mapStyles'
 import './Maps.css'
 
-const defaultLocation = {lat: 40.418437, lng: -111.819107}
-const defaultZoom = 10;
 
 const locations = [{
-    Name: 'Lehi',
+    name: 'Lehi',
     lat: 40.438473, 
     lng: -111.892520
 },{
-    Name: 'Orem',
+    name: 'Orem',
     lat: 40.296499,  
     lng: -111.701905
-},{
-    Name: 'Draper',
+},{ 
+    name: 'Draper',
     lat: 40.527182, 
     lng: -111.877191
 }]
 
 
 function Maps (props) {
-    const [selectedLocation, setSelectedLocation] = useState({name: "Please Enter Location"})
 
-    function handleSelection() {
+    const [selectedLocation, setSelectedLocation] = useState(props.location)
+    const [showInfoWindow, setShowInfoWindow] = useState(false)
 
+    useEffect(() => {
+        console.log('use effect',selectedLocation)
+        props.updateLocation(selectedLocation)
+    },[selectedLocation])
+
+    function handleSelection(loc) {   /// loc stands for location
+        setSelectedLocation(loc)
+        setShowInfoWindow(true)
     }
-    
-    const markers = locations.map((e, i) => {
-        return <Marker key={`map ${i}`} position={{lat:e.lat, lng:e.lng}} />
+
+    const markers = locations.map((loc, i) => {
+        return <Marker  key={`marker ${i}`} 
+                        position={ { lat:loc.lat, lng:loc.lng } }
+                        onClick={ () => {handleSelection(loc)} } />
+                    //  Icon={ {url:'', scaledSize: new window.google.maps.Size(25, 25)} } in px
     })
 
     return (
         <section>
             <GoogleMap id='map'
-                defaultZoom={10}
-                defaultCenter={defaultLocation}
+                defaultZoom={ 10 }
+                defaultCenter={ { lat:selectedLocation.lat, lng:selectedLocation.lng } }
+                defaultOptions={ {styles: mapStyles } }
             >
 
                 {/* {props.isMakerShown && <Marker position={defaultLocation} />} */}
-                {markers}
+                { markers }
 
+                {showInfoWindow && (
+                    <InfoWindow
+                        position={ { lat:selectedLocation.lat, lng:selectedLocation.lng } }
+                        onCloseClick={ () => { setShowInfoWindow(false) } }
+                    >
+                    <div>
+                        <h2>{selectedLocation.name}</h2>     
+                        <p>Come Get Some Grub!</p>
+                    </div>           
+                    </InfoWindow>                   /////possible make unique tag for some locations
+                )}
             </GoogleMap>
 
-            <Selector locations={locations} handleSelection={handleSelection} selected={selectedLocation}/>
+            <Selector locations={locations} 
+                    handleSelection={handleSelection} 
+                    selected={selectedLocation} />
             
         </section>
     )
@@ -53,6 +79,15 @@ function Maps (props) {
 
 const MapContainer = withScriptjs(withGoogleMap(Maps))
 
-export default MapContainer
+function mapStateToProps(reactState) {
+    const {  location } = reactState
+    return { location }
+}
+
+const mapDispatchToProps = {
+    updateLocation
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer) 
 
            

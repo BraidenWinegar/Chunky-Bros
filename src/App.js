@@ -13,7 +13,11 @@ function App() {
         <HashRouter>
           <div className="App">
             <Toolbar />
+            <div className="cover-container">
+              <div id="max-with-container">
             {routes}
+              </div>
+            </div>
           </div>
         </HashRouter>
       </Provider>

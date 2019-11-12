@@ -6,7 +6,7 @@ Insert Into item_lists (
     $1, 
     $2, 
     1
-);
+) returning *;
 
-select * from item_lists
-where order_id=$1 and item_id=$2;
+-- select * from item_lists
+-- where order_id=$1 and item_id=$2;

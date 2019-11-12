@@ -4,8 +4,9 @@ import {connect} from 'react-redux'
 import axios from "axios"
 import {updateOrderId} from '../../Reducer/reducer'
 import OrderItem from './OrderItem'
+import './Order.css'
 
-function Order (props) {
+function Order(props) {
     const [order, setOrder] = useState([])
     const [total, setTotal] = useState(0)
 
@@ -19,8 +20,8 @@ function Order (props) {
         , 0)
     )},[order])
 
-    function getOrder () {
-        axios.get(`/api/order/${2}`)////set 2 to props.orderId
+    function getOrder () {  
+        axios.get(`/api/order/${props.orderId}`)  /// adjust db 
         .then(res => { 
             console.log('res.data', res.data) 
             setOrder(res.data)
@@ -42,7 +43,7 @@ function Order (props) {
         }
     }
 
-    let orderToDisplay = "you don't have anything on your order"
+    let orderToDisplay = <h2 id='message'>you don't have anything on your order</h2>
     if(order[0] !== undefined){
         orderToDisplay = order.map((e,i) => {
             return <OrderItem item={e} 
@@ -53,9 +54,9 @@ function Order (props) {
 
     return (
     <div>
-        The food you have ordered
-        <Link to='/menu'><button>Add More</button></Link>
-        <Link to='/checkout'><button>Checkout</button></Link>
+        <p className='order-words'>The food you have ordered</p>
+        <Link to='/menu'><button className='order-button'>Add More</button></Link>
+        <Link to='/checkout'><button className='order-button'>Checkout</button></Link>
         
         {orderToDisplay}
 

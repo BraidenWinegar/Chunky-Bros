@@ -1,8 +1,6 @@
-import axios from 'axios'
-
 
 const initialState = {
-    location: '',
+    location: {name: "Choose Location", lat: 40.418437, lng: -111.819107},
     userName: '',
     oderId: 0,
     user: {}
@@ -10,7 +8,8 @@ const initialState = {
 
 const UPDATE_USER = 'UPDATE_USER';
 const CLEAR_USER = 'CLEAR_USER';
-const UPDATE_ORDER = 'UPDATE_ORDER'
+const UPDATE_ORDER = 'UPDATE_ORDER';
+const UPDATE_LOCATION = 'UPDATE_LOCATION'
 
 export function updateUser(userObj) {
     return{
@@ -35,6 +34,13 @@ export function updateOrderId(orderId) {
     }
 }
 
+export function updateLocation(location) {
+    return {
+        type: UPDATE_LOCATION,
+        payload: location
+    }
+}
+
 export default function reducer (state = initialState, action) {
     const {type, payload} = action
     switch(type){
@@ -44,6 +50,9 @@ export default function reducer (state = initialState, action) {
             return { ...state, userName:payload, user:payload }
         case UPDATE_ORDER:
             return { ...state, orderId: payload } 
+        case UPDATE_LOCATION:
+            console.log('hit reducer')
+            return { ...state, location: payload}
         default: 
             return state
     }

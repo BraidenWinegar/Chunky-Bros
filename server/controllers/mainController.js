@@ -8,8 +8,6 @@
     removeItem
 */
 
-
-
 module.exports = {
     getMenu: async(req, res) => {
         const db = req.app.get('db')
@@ -43,11 +41,15 @@ module.exports = {
     },
 
     addItem: async (req, res) => {
+        console.log('addItem')
         const {order_id, item_id} = req.body;
         const db = req.app.get('db');
+        console.log(order_id, item_id)
         foundItem = await db.check_item(order_id, item_id);
+        console.log(foundItem[0])
         if(foundItem[0] === undefined){
             const data = await db.add_item(order_id, item_id);
+            console.log('data', data)
             res.status(200).send(data)
         } else {
             const data = await db.set_item_quantity(

@@ -23,8 +23,8 @@ function OrderItem(props) {
         <div>
             <h3>{props.item.item_name} </h3>
             <div>
-                <button onClick={decrement}>-</button>
-                {quantity}
+                <button class onClick={decrement}>-</button>
+                <span className='order-words'>{quantity}</span>
                 <button onClick={increment}>+</button> 
             </div>
 

@@ -1,15 +1,20 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import './Menu.css'
 
 function Items (props) {
 
+
+
     const handleClick = () => {
-        if(props.loggedIn && props.hasOrder){
-            axios.put('/api/item',{orderId: props.orderId, itemId: props.itemId})
+        console.log('hit')
+        if(props.orderId){
+            console.log('slap', props.item_id)
+            axios.put('/api/item',{order_id: props.orderId, item_id: props.item_id})
             .then(res => {
-                return res.data
+                console.log("res.data", res.data)
             })
             .catch(err => console.log(err)) 
         }
@@ -18,8 +23,13 @@ function Items (props) {
     return (
         <div>
             <h2>{props.item_name}<span> ${props.price}</span></h2>
-            <img className='menu-img' onClick={handleClick} src={props.picture_url} 
-            alt={`${props.item_name}`} />
+            <Link to='/order'>
+                <img className='menu-img' 
+                    onClick={handleClick} 
+                    src={props.picture_url} 
+                    alt={`${props.item_name}`} 
+                />
+            </Link>
         </div>
     )
 }
@@ -29,8 +39,5 @@ function mapStateToProps(reactState) {
     return { userName, orderId }
 }
 
-const mapDispatchToProps = {
-    
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Items) 
+export default connect(mapStateToProps, null)(Items) 
