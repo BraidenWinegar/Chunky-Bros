@@ -50,5 +50,13 @@
     ]
   },
   "main": "server/index.js",
-  "proxy": "http://localhost:5050"
+  "proxy": "http://localhost:5050",
+  "cssnano": {
+    "preset": [
+      "default",
+      {
+        "calc": false
+      }
+    ]
+  }
 }
