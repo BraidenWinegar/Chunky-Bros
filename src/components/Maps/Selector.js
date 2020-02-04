@@ -4,7 +4,10 @@ function LocationSelector(props) {
     const [expanded, setExpanded] = React.useState(false)
     const [selected, setSelected] = React.useState(props.selected)
 
-    
+    React.useEffect(() => {
+        setSelected(props.selected)
+    }, [props.selected])
+
     function handleSelection (e) {
         setSelected({name: e.name})
         props.handleSelection(e)
@@ -16,7 +19,6 @@ function LocationSelector(props) {
     }
     
     const expandedButtons = props.locations.map((e, i) => {
-        console.log('e',e)
         return(
             <button className='selector-button' key={`selector ${i}`} onClick={()=>handleSelection(e)} > 
                 {e.name}
@@ -24,7 +26,6 @@ function LocationSelector(props) {
         )        
     })
     
-    console.log("locations", props.locations)
 
     if(expanded){
         return (
@@ -42,8 +43,6 @@ function LocationSelector(props) {
     )
     }
 
-    
-    
 }
 
 export default LocationSelector

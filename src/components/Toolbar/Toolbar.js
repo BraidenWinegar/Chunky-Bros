@@ -14,6 +14,7 @@ function Toolbar(props) {
     const mapTitle = (props.location) ? props.location.name : 'Choose Location'
     const userName = (props.userName) ? props.userName : 'Login'
 
+    console.log(props)
     return(
         <header>
             <Link  to='/'>

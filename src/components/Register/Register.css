@@ -1,8 +1,27 @@
+input{
+    margin: 5px;
+} 
+
+#login-err{
+    color: red;
+}
+
+.inputs{
+    margin: 20px;
+}
+
 .error {
     color: red;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .inputError{
     border-color: red
+}
+
+.to-register{
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid #8F3B2B;
+    /* text-decoration: underline; */
 }

@@ -44,7 +44,7 @@ app.post('/api/order/:user_id', menuCtrl.addOrder)
 app.get('/api/order/:order_id', menuCtrl.getOrder)
 app.put('/api/item', menuCtrl.addItem)
 app.put('/api/item-q', menuCtrl.setQuantity)
-app.delete('/api/item', menuCtrl.removeItem)
+app.delete('/api/item/:order_id/:item_id', menuCtrl.removeItem)
 
 // used to process payments using stripe
 app.get("/", (req, res) => {

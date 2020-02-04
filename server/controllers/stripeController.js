@@ -5,7 +5,6 @@ const uuid = require("uuid/v4");
 
 module.exports = {
     checkout: async (req, res) => {
-        console.log('req.body', req.body);
         const { token, thisOrder } = req.body
         let error, status;
 
@@ -29,7 +28,6 @@ module.exports = {
                     idempotency_key   
                 }
             );
-            console.log('Charge:', {charge} )
             status = 'success'
         } catch (err){
             console.log("Error", err)

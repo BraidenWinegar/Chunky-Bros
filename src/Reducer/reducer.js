@@ -2,7 +2,7 @@
 const initialState = {
     location: {name: "Choose Location", lat: 40.418437, lng: -111.819107},
     userName: '',
-    oderId: 0,
+    orderId: 0,
     user: {}
 }
 
@@ -10,6 +10,7 @@ const UPDATE_USER = 'UPDATE_USER';
 const CLEAR_USER = 'CLEAR_USER';
 const UPDATE_ORDER = 'UPDATE_ORDER';
 const UPDATE_LOCATION = 'UPDATE_LOCATION'
+const CLEAR_ORDER = 'CLEAR_ORDER'
 
 export function updateUser(userObj) {
     return{
@@ -19,12 +20,10 @@ export function updateUser(userObj) {
 }
 
 export function clearUser() {
-    const action = {
+    return {
         type: CLEAR_USER,
         payload: ''
     }
-    console.log (action)
-    return action
 }
 
 export function updateOrderId(orderId) {
@@ -32,6 +31,14 @@ export function updateOrderId(orderId) {
         type: UPDATE_ORDER,
         payload: orderId
     }
+}
+
+export function clearOrderId() {
+    return {
+        type: CLEAR_ORDER,
+        payload: 0
+    }
+    
 }
 
 export function updateLocation(location) {
@@ -51,8 +58,9 @@ export default function reducer (state = initialState, action) {
         case UPDATE_ORDER:
             return { ...state, orderId: payload } 
         case UPDATE_LOCATION:
-            console.log('hit reducer')
             return { ...state, location: payload}
+        case CLEAR_ORDER:
+            return { ...state, orderId: payload}
         default: 
             return state
     }

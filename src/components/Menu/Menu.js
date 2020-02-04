@@ -7,8 +7,6 @@ import {updateOrderId } from '../../Reducer/reducer'
 import Items from './Items'
 
 
-
-
 function Menu (props) {
     const [menu, setMenu ]= useState([]);
     
@@ -18,8 +16,9 @@ function Menu (props) {
         .then(res => { setMenu(res.data) })
         .catch(err => console.log(err))
         if(!props.orderId)  {
-            if(props.userName)
+            if(props.userName){
                 user_id = props.user.user_id
+            }
             axios.post(`/api/order/${user_id}`)
             .then(res => {
                 props.updateOrderId( res.data.order_id[0].order_id )

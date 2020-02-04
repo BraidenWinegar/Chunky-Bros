@@ -6,23 +6,28 @@ import {connect} from 'react-redux'
 import {updateUser} from '../../Reducer/reducer'
 
 function Login(props) {
+    
+    const [loginError, setLoginError] = React.useState(<p></p>)
+    
+    
     const login = () => {
-
         axios.post('/auth/login', 
         {username: state.username, password: state.password})
         .then(res => {
             props.updateUser(res.data)
             props.history.go(-1)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            setLoginError(<h2 id='login-err'>Incorrect username or password</h2>)
+        })
     }
-    
-    const {state, handleChange, handleSubmit, errors} = useForm(login)
-    
+    let {state, handleChange, handleSubmit, errors} = useForm(login)
+
     return (
         <div>
+            {loginError}
         <form noValidate onSubmit={handleSubmit} >
-            <div>
+            <div className='inputs'>
                 <label> Username</label>
                 <div>
                     <input name='username' 
@@ -34,7 +39,7 @@ function Login(props) {
                     {errors.username && <p className="error">{errors.username}</p>}
                 </div>
             </div>
-            <div>
+            <div className='inputs'>
                 <label>Password</label>
                 <div>
                     <input name='password' 
@@ -51,7 +56,7 @@ function Login(props) {
         </form>
 
         <div>
-            Don't have an account? make one <Link to='register'>Here</Link>
+            <h3>Don't have an account? make one</h3> <Link to='register'><span className='to-register'>Here!</span></Link>
         </div>
         </div>
     )

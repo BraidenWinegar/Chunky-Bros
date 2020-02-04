@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 
-
 function OrderItem(props) {
     const [quantity, setQuantity] = useState(1)
 
@@ -14,14 +13,14 @@ function OrderItem(props) {
     }
 
     function decrement() {
-        setQuantity(quantity - 1)
+        if (quantity > 0){
+            setQuantity(quantity - 1)
+        }
     }
 
-
-
     return (
-        <div>
-            <h3>{props.item.item_name} </h3>
+        <div className='order-item-box'>
+            <h3 className='order-item-title'>{props.item.item_name} </h3>
             <div>
                 <button class onClick={decrement}>-</button>
                 <span className='order-words'>{quantity}</span>
@@ -31,8 +30,7 @@ function OrderItem(props) {
             <button onClick={() => {props.setQuantity(props.item.order_id, 
                                                     props.item.item_id,
                                                     quantity)}}
-            >Enter Number</button>
-            
+            >Enter Number</button> 
         </div>
     )
 }

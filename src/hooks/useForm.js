@@ -23,8 +23,8 @@ export const useForm = callback => {
 
         if (!values.username){
             errors.username = "must enter a username"
-        } else if (values.username.length < 1) {
-            errors.username = "Username needs to be more than 5 characters";
+        } else if (values.username.length < 3) {
+            errors.username = "Username needs to be more than 3 characters";
         }
 
         // if (!values.email){
@@ -36,8 +36,8 @@ export const useForm = callback => {
 
         if (!values.password) {
             errors.password = "Password is required";
-        } else if (values.password.length < 1) {
-            errors.password = "Password needs to be more than 5 characters";
+        } else if (values.password.length < 2) {
+            errors.password = "Password needs to be more than 2 characters";
         }
 
         if(isNaN(values.phoneNumber)) {
@@ -60,7 +60,7 @@ export const useForm = callback => {
         if (Object.keys(errors).length === 0 && isSubmitting){
             callback()
         }
-    }, [errors, callback, isSubmitting])
+    }, [errors, isSubmitting])
 
     return {
         state,

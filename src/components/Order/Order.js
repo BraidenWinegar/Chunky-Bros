@@ -23,21 +23,23 @@ function Order(props) {
     function getOrder () {  
         axios.get(`/api/order/${props.orderId}`)  /// adjust db 
         .then(res => { 
-            console.log('res.data', res.data) 
             setOrder(res.data)
         }).catch(err => console.log(err))
     }
 
     const setQuantity = (orderId, itemId, number) => { /// function gets passed down to OrderItem
         if(number < 1){
-            console.log("nope")
-                /// and delete item function
+            axios.delete(`/api/item/${orderId}/${itemId}`
+            ).then (() => {
+                getOrder()
+            }).catch(err => console.log(err))
+
         } else {
             axios.put('/api/item-q', {
                 order_id: orderId, 
                 item_id: itemId, 
-                quantity:number })
-            .then (res => {
+                quantity:number 
+            }).then (() => {
                 getOrder()
             }).catch(err => console.log(err))
         }
@@ -57,10 +59,11 @@ function Order(props) {
         <p className='order-words'>The food you have ordered</p>
         <Link to='/menu'><button className='order-button'>Add More</button></Link>
         <Link to='/checkout'><button className='order-button'>Checkout</button></Link>
-        
-        {orderToDisplay}
+        <div id='order-container'>
+            {orderToDisplay}
+        </div>
 
-        <h3>{`the Price of your order is $${total}`}</h3>
+        <h3>{order[0] && `the Price of your order is $${total}`}</h3>
     </div>)
     
 } 
