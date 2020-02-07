@@ -3,15 +3,18 @@ const cors = require('cors')
 const express = require('express')
 const massive = require('massive')
 const session = require('express-session')
+const path = require('path')
 const{ SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env
-
 
 const authCtrl = require('./controllers/authController')
 const menuCtrl = require('./controllers/mainController')
 const stripeCtrl = require('./controllers/stripeController')
 
+//Set up
+const app = express();
+// const dev = app('env' !== 'production')///////rs
 
-const app = express()
+
 
 //topLevel middleware
 app.use(express.json())
@@ -24,6 +27,14 @@ app.use(session({
         maxAge: 3600000
     }
 }))
+
+if(!dev){//////
+    app.disable('x-powered-by')//////
+    app.use(express.static(path.resolve(__dirname, 'build')))  ///////
+    app.get('*', (req, res) => {///////
+        res.sendFile(path.join(__dirname + '/build/index.html'))/////
+    })///////
+}////////
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db);
@@ -49,8 +60,18 @@ app.delete('/api/item/:order_id/:item_id', menuCtrl.removeItem)
 // used to process payments using stripe
 app.get("/", (req, res) => {
     res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
-  });
+});
 app.post('/api/checkout', stripeCtrl.checkout)
 
 
-app.listen(SERVER_PORT, () => console.log(`Server on ${SERVER_PORT}`))
+// Serve static assets if in production
+if(process.env.NODE_ENV === 'production') {
+    //set static folder
+    app.use(express.static('build'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+    })
+}
+
+const port = process.env.PORT || SERVER_PORT;///////changed from const port = SERVER_PORT
+app.listen( port, () => console.log(`Server on ${port}`))

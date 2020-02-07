@@ -1,6 +1,11 @@
 {
   "name": "personal-project",
   "version": "0.1.0",
+  "description": "Basic app for restaurants to take orders",
+  "engines": {
+    "node": "10.16.3",
+    "npm": "6.9.0"
+  },
   "private": true,
   "dependencies": {
     "axios": "^0.19.0",
@@ -31,6 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
