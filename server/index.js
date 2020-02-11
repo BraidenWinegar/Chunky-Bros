@@ -4,7 +4,8 @@ const express = require('express')
 const massive = require('massive')
 const session = require('express-session')
 const path = require('path')
-const{ SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env
+const{ PORT, DATABASE_URL} = process.env
+const SESSION_SECRET = process.env.SESSION_SECRET || "SessionSecret"
 
 const authCtrl = require('./controllers/authController')
 const menuCtrl = require('./controllers/mainController')
@@ -28,15 +29,18 @@ app.use(session({
     }
 }))
 
-if(!dev){//////
-    app.disable('x-powered-by')//////
-    app.use(express.static(path.resolve(__dirname, 'build')))  ///////
-    app.get('*', (req, res) => {///////
-        res.sendFile(path.join(__dirname + '/build/index.html'))/////
-    })///////
-}////////
 
-massive(CONNECTION_STRING).then(db => {
+app.disable('x-powered-by')//////
+app.use(express.static(path.join(__dirname, '../build')));
+
+// if(!dev){//////
+//     app.use(express.static(path.resolve(__dirname, 'build')))  ///////
+//     app.get('*', (req, res) => {///////
+//         res.sendFile(path.join(__dirname + '/build/index.html'))/////
+//     })///////
+// }////////
+
+massive(DATABASE_URL).then(db => {
     app.set('db', db);
     console.log('db connected')
 })
@@ -73,5 +77,5 @@ if(process.env.NODE_ENV === 'production') {
     })
 }
 
-const port = process.env.PORT || SERVER_PORT;///////changed from const port = SERVER_PORT
+const port = PORT;///////changed from const port = SERVER_PORT
 app.listen( port, () => console.log(`Server on ${port}`))
