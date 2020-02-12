@@ -1,5 +1,5 @@
 require('dotenv').config();
-const cors = require('cors')
+// const cors = require('cors')
 const express = require('express')
 const massive = require('massive')
 const session = require('express-session')
@@ -19,7 +19,6 @@ const app = express();
 
 //topLevel middleware
 app.use(express.json())
-app.use(cors())
 app.use(session({
     resave:false,
     saveUninitialized: true,
@@ -32,13 +31,6 @@ app.use(session({
 
 app.disable('x-powered-by')//////
 app.use(express.static(path.join(__dirname, '../build')));
-
-// if(!dev){//////
-//     app.use(express.static(path.resolve(__dirname, 'build')))  ///////
-//     app.get('*', (req, res) => {///////
-//         res.sendFile(path.join(__dirname + '/build/index.html'))/////
-//     })///////
-// }////////
 
 massive(DATABASE_URL).then(db => {
     app.set('db', db);
@@ -62,20 +54,14 @@ app.put('/api/item-q', menuCtrl.setQuantity)
 app.delete('/api/item/:order_id/:item_id', menuCtrl.removeItem)
 
 // used to process payments using stripe
-app.get("/", (req, res) => {
-    res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
-});
 app.post('/api/checkout', stripeCtrl.checkout)
 
 
 // Serve static assets if in production
-if(process.env.NODE_ENV === 'production') {
-    //set static folder
-    app.use(express.static('build'))
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
-    })
-}
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+})
 
 const port = PORT;///////changed from const port = SERVER_PORT
 app.listen( port, () => console.log(`Server on ${port}`))

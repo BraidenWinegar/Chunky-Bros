@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import {updateLocation} from '../../Reducer/reducer'
 import {GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow} from "react-google-maps"
+// import hiddnVarables from '../../hiddenVarables'
 import Selector from './Selector'
 import mapStyles from './mapStyles'
 import './Maps.css'

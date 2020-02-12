@@ -1,6 +1,5 @@
 import React from 'react'
 import Maps from './Maps'
-import {REACT_APP_GOOGLE_KEY} from '../../hiddenVarables'
 import './mapStyles'
 
 
